@@ -1,3 +1,18 @@
+definitions:
+  handler.PingServerResponse:
+    properties:
+      data:
+        $ref: '#/definitions/schemas.PingResponse'
+      message:
+        type: string
+    type: object
+  schemas.PingResponse:
+    properties:
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
 info:
   contact: {}
 paths:
@@ -10,10 +25,9 @@ paths:
       - application/json
       responses:
         "200":
-          description: Returns a JSON object with the message and status code
+          description: OK
           schema:
-            additionalProperties: true
-            type: object
+            $ref: '#/definitions/handler.PingServerResponse'
       summary: Ping the server
       tags:
       - Ping

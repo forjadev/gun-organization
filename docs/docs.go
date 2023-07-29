@@ -31,12 +31,35 @@ const docTemplate = `{
                 "summary": "Ping the server",
                 "responses": {
                     "200": {
-                        "description": "Returns a JSON object with the message and status code",
+                        "description": "OK",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "$ref": "#/definitions/handler.PingServerResponse"
                         }
                     }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "handler.PingServerResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/schemas.PingResponse"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "schemas.PingResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
                 }
             }
         }
