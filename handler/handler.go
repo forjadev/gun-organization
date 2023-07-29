@@ -3,6 +3,7 @@ package handler
 import (
 	"net/http"
 
+	"github.com/forjadev/gun-organization/schemas"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,11 +14,13 @@ import (
 // @Tags Ping
 // @Accept json
 // @Produce json
-// @Success 200 {object} map[string]interface{} "Returns a JSON object with the message and status code"
+// @Success 200 {object} PingServerResponse
 // @Router /ping [get]
 func PingServerHandler(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, gin.H{
-		"message": "pong",
-		"status":  http.StatusOK,
-	})
+	pingData := schemas.PingResponse{
+		Message: "pong",
+		Status:  http.StatusOK,
+	}
+
+	sendSuccess(ctx, "PingServerHandler", pingData)
 }
