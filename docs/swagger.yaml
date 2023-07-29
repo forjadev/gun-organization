@@ -1,4 +1,20 @@
 info:
   contact: {}
-paths: {}
+paths:
+  /ping:
+    get:
+      consumes:
+      - application/json
+      description: Ping the server to check if it is running
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Returns a JSON object with the message and status code
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Ping the server
+      tags:
+      - Ping
 swagger: "2.0"
