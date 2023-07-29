@@ -3,11 +3,15 @@ package router
 import (
 	"net/http"
 
+	docs "github.com/forjadev/gun-organization/docs"
 	"github.com/gin-gonic/gin"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func initializeRoutes(r *gin.Engine) {
 	basePath := "/api/v1"
+	docs.SwaggerInfo.BasePath = basePath
 
 	v1 := r.Group(basePath)
 
@@ -19,4 +23,7 @@ func initializeRoutes(r *gin.Engine) {
 			})
 		})
 	}
+
+	// Initialize swagger
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 }
