@@ -16,7 +16,7 @@ import (
 // @Success 200 {object} map[string]interface{} "Returns a JSON object with the message and status code"
 // @Router /ping [get]
 func PingServerHandler(ctx *gin.Context) {
-	ctx.JSON(200, gin.H{
+	ctx.JSON(http.StatusOK, gin.H{
 		"message": "pong",
 		"status":  http.StatusOK,
 	})
