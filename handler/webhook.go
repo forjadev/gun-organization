@@ -13,7 +13,6 @@ func WebhookReceiverHandle(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
 	service.WebhookHandler(c, postData)
 
 	c.JSON(http.StatusOK, gin.H{"data": postData})
