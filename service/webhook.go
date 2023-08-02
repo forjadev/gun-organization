@@ -3,6 +3,7 @@ package service
 import (
 	"errors"
 	"fmt"
+	"log"
 
 	"github.com/gin-gonic/gin"
 )
@@ -41,13 +42,16 @@ func WebhookHandler(ctx *gin.Context, data *GithubWebhookUserManagePayload) erro
 	switch data.Action {
 	case "removed":
 		if err := deleteUser(data); err != nil {
+			log.Printf("Error while deleting user: %+v", data)
 			return err
 		}
 	case "added":
 		if err := addUser(data); err != nil {
+			log.Printf("Error while adding user: %+v", data)
 			return err
 		}
 	default:
+		log.Printf("unsupported action: %+v", data.Action)
 		return errors.New("unsupported action")
 	}
 	return nil
