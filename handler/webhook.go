@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func WebhookReceiverHandle(c *gin.Context) {
+func GitHubWebhookHandler(c *gin.Context) {
 	postData := new(service.GithubWebhookUserManagePayload)
 	if err := c.ShouldBindJSON(&postData); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
