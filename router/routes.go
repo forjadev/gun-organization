@@ -23,6 +23,7 @@ func initializeRoutes(r *gin.Engine) {
 	{
 		// Define a GET route for the /ping endpoint
 		v1.GET("/ping", handler.PingServerHandler)
+		v1.GET("/teams/:teamname/members", handler.ListTeamMembersHandler)
 	}
 
 	// Initialize Swagger documentation
