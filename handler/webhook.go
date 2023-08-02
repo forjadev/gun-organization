@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/forjadev/gun-organization/service"
@@ -13,7 +14,11 @@ func WebhookReceiverHandle(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	service.WebhookHandler(c, postData)
+	if err := service.WebhookHandler(c, postData); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 
+	log.Printf("Webhook data processed: %+v", postData)
 	c.JSON(http.StatusOK, gin.H{"data": postData})
 }
