@@ -16,7 +16,7 @@ func TestWebhookReceiverHandle_Success(t *testing.T) {
 	r := gin.Default()
 	r.POST("/api/v1/webhook", handler.GitHubWebhookHandler)
 	reqPayload := `{
-		"action": "some_action",
+		"action": "added",
 		"scope": "some_scope",
 		"member": {
 			"id": 123,
@@ -52,11 +52,6 @@ func TestHandleGitHubWebhook_InvalidJSON(t *testing.T) {
 	rw := performRequest(r, http.MethodPost, "/api/v1/webhook", reqPayload)
 
 	assertResponseCode(t, rw.Code, http.StatusBadRequest)
-}
-
-func TestWebhookReceiverHandle_MethodNotAllowed(t *testing.T) {
-	//TODO: Implementar metodo para retornar o status code MethodNotAllowed(405) pegando do
-	// enum de http.MethodNotAllowed quando tentar chamar esse metodo do webhook passando um GET ou qualquer outro verbo que nao seja o POST
 }
 
 func assertResponseCode(t *testing.T, got, want int) {
