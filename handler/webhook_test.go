@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestWebhookReceiverHandle_Success(t *testing.T) {
+func TestGitHubWebhookHandler_Success(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
 	r.POST("/api/v1/webhook", handler.GitHubWebhookHandler)
@@ -44,7 +44,7 @@ func TestWebhookReceiverHandle_Success(t *testing.T) {
 	assertResponseCode(t, rw.Code, http.StatusOK)
 }
 
-func TestHandleGitHubWebhook_InvalidJSON(t *testing.T) {
+func TestGitHubWebhookHandler_InvalidJSON(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
 	r.POST("/api/v1/webhook", handler.GitHubWebhookHandler)
