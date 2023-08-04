@@ -6,9 +6,9 @@ APP_NAME=gunorganization
 #Tasks
 default: run-with-docs
 
-run:
+run: database
 	@go run main.go
-run-with-docs:
+run-with-docs: database
 	@swag init
 	@go run main.go
 build:
@@ -17,6 +17,11 @@ test:
 	@go test ./...
 docs:
 	@swag init
+database:
+	@docker compose down
+	@docker compose up -d
+	@sleep 0.5
 clean:
 	@rm -rf $(APP_NAME)
 	@rm -rf ./docs
+	@docker compose down -v
