@@ -17,9 +17,12 @@ import (
 // @Success 200 {object} TeamsServerResponse
 // @Router /teams [get]
 func GetTeamsHandler(ctx *gin.Context) {
-	teams := schemas.TeamsResponse{
-		Message: "teams",
-		Status: http.StatusOK,
+	teams := []schemas.Team{}
+
+	if err := db.Find(&teams).Error;err!=nil{
+		sendError(ctx, http.StatusInternalServerError, "error listing teams")
+		return
 	}
+
 	sendSuccess(ctx, "GetTeamsHandler", teams)
 }
