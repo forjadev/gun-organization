@@ -10,6 +10,9 @@ import (
 
 // initializeRoutes sets up the routes for the application
 func initializeRoutes(r *gin.Engine) {
+	// Initialize handler
+	handler.InitiliazeHandler()
+
 	// Set the base path for all routes
 	basePath := "/api/v1"
 
