@@ -24,6 +24,8 @@ func initializeRoutes(r *gin.Engine) {
 		// Define a GET route for the /ping endpoint
 		v1.GET("/ping", handler.PingServerHandler)
 		v1.POST("/webhook", handler.GitHubWebhookHandler)
+		v1.GET("/org-members", handler.GetOrgMembersHandler)
+		v1.GET("/update-readme", handler.UpdateReadmeHandler)
 	}
 
 	// Initialize Swagger documentation
