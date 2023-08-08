@@ -7,13 +7,15 @@
 
 ## 📚 Table of Contents
 
-- [Features](#-features)
-- [Requirements](#-requirements)
-- [Setup](#-setup)
-- [Usage](#-usage)
-- [Testing](#-testing)
-- [Contributing](#-contributing)
-- [License](#-license)
+- [Organization API](#organization-api)
+  - [📚 Table of Contents](#-table-of-contents)
+  - [💡 Features](#-features)
+  - [🔧 Requirements](#-requirements)
+  - [🚀 Setup](#-setup)
+  - [💻 Usage](#-usage)
+  - [🧪 Testing](#-testing)
+  - [🤝 Contributing](#-contributing)
+  - [📜 License](#-license)
 
 ## 💡 Features
 
@@ -29,7 +31,28 @@
 
 ## 🚀 Setup
 
-TODO
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/forjadev/gun-organization.git
+   ```
+2. Install the dependencies:
+   ```sh
+   go mod download
+   ```
+3. Create a `.env` file in the root directory of the project by copying the `.env.example` file:
+   ```sh
+   cp .env.example .env
+   ```
+4. Update the environment variables in the .env file with your own values.
+5. Build the project:
+   ```sh
+   go build
+   ```
+6. Run the server:
+   ```sh
+   ./main
+   ```
+The server will start running on http://localhost:8080.
 
 ## 💻 Usage
 
