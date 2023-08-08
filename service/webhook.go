@@ -54,6 +54,7 @@ func WebhookHandler(ctx *gin.Context, data *GithubWebhookUserManagePayload) erro
 		log.Printf("unsupported action: %+v", data.Action)
 		return errors.New("unsupported action")
 	}
+	// TODO: Issue #10 <update database on webhook service> Trigger Github Action to update README.md
 	return nil
 }
 
