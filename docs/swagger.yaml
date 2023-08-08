@@ -1,4 +1,11 @@
 definitions:
+  handler.ErrorResponse:
+    properties:
+      errorCode:
+        type: integer
+      message:
+        type: string
+    type: object
   handler.PingServerResponse:
     properties:
       data:
@@ -12,6 +19,51 @@ definitions:
         type: string
       status:
         type: integer
+    type: object
+  service.GithubWebhookUserManagePayload:
+    properties:
+      action:
+        type: string
+      member:
+        properties:
+          html_url:
+            type: string
+          id:
+            type: integer
+          login:
+            type: string
+          type:
+            type: string
+        type: object
+      organization:
+        properties:
+          id:
+            type: integer
+          login:
+            type: string
+          url:
+            type: string
+        type: object
+      scope:
+        type: string
+      sender:
+        properties:
+          id:
+            type: integer
+          login:
+            type: string
+          type:
+            type: string
+        type: object
+      team:
+        properties:
+          id:
+            type: integer
+          name:
+            type: string
+          slug:
+            type: string
+        type: object
     type: object
 info:
   contact: {}
@@ -31,4 +83,32 @@ paths:
       summary: Ping the server
       tags:
       - Ping
+  /webhook:
+    post:
+      consumes:
+      - application/json
+      description: Handle with GitHub Webhook Payload
+      parameters:
+      - description: Github webhook payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/service.GithubWebhookUserManagePayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "500":
+          description: Server Error
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Github Webhook Membership Receiver
+      tags:
+      - Webhook
 swagger: "2.0"
