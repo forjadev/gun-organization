@@ -1,11 +1,10 @@
 package handler
 
 import (
-	"log"
-	"net/http"
-
 	"github.com/forjadev/gun-organization/service"
 	"github.com/gin-gonic/gin"
+	"log"
+	"net/http"
 )
 
 // @BasePath /api/v1
@@ -30,6 +29,5 @@ func GitHubWebhookHandler(c *gin.Context) {
 		sendError(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-
 	log.Printf("Webhook data processed: %+v", postData)
 }

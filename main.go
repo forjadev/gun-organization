@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 
-	"github.com/forjadev/gun-organization/config"
 	"github.com/forjadev/gun-organization/router"
 	"github.com/joho/godotenv"
 )
@@ -16,11 +15,11 @@ func main() {
 	}
 
 	//Initialize configs
-	err = config.Init()
+	//err = config.Init()
 
 	if err != nil {
 		log.Fatalf("could not initialize config: %v", err)
 	}
 	// Initialize Router
-	router.Initialize()
+	router.InitializeRoutes()
 }
