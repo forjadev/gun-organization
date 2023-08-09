@@ -11,6 +11,10 @@ type Team struct {
 	Name string
 }
 
+type TeamNameRequest struct {
+	name string
+}
+
 type TeamResponse struct {
 	ID        uint      `json:"id"`
 	CreatedAt time.Time `json:"createdAt"`
