@@ -106,6 +106,17 @@ const docTemplate = `{
                 }
             }
         },
+        "handler.TeamsServerResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/schemas.TeamsResponse"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
         "schemas.PingResponse": {
             "type": "object",
             "properties": {

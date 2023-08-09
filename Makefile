@@ -20,7 +20,7 @@ docs:
 database:
 	@docker compose down
 	@docker compose up -d
-	@sleep 0.5
+	@sleep 1.0
 clean:
 	@rm -rf $(APP_NAME)
 	@rm -rf ./docs

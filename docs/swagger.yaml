@@ -13,6 +13,13 @@ definitions:
       message:
         type: string
     type: object
+  handler.TeamsServerResponse:
+    properties:
+      data:
+        $ref: '#/definitions/schemas.TeamsResponse'
+      message:
+        type: string
+    type: object
   schemas.PingResponse:
     properties:
       message:

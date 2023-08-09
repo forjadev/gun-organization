@@ -2,21 +2,12 @@ package handler
 
 import (
 	"fmt"
-	"github.com/forjadev/gun-organization/schemas"
 	"net/http"
+
+	"github.com/forjadev/gun-organization/schemas"
 
 	"github.com/gin-gonic/gin"
 )
-
-type ErrorResponse struct {
-	Message   string `json:"message"`
-	ErrorCode int    `json:"errorCode"`
-}
-
-type PingServerResponse struct {
-	Message string               `json:"message"`
-	Data    schemas.PingResponse `json:"data"`
-}
 
 func sendError(ctx *gin.Context, code int, msg string) {
 	ctx.Header("Content-Type", "application/json")
@@ -32,4 +23,19 @@ func sendSuccess(ctx *gin.Context, op string, data interface{}) {
 		"message": fmt.Sprintf("operation from handler: %s successful", op),
 		"data":    data,
 	})
+}
+
+type ErrorResponse struct {
+	Message   string `json:"message"`
+	ErrorCode int    `json:"errorCode"`
+}
+
+type PingServerResponse struct {
+	Message string               `json:"message"`
+	Data    schemas.PingResponse `json:"data"`
+}
+
+type TeamsServerResponse struct {
+	Message string 	`json:"message"`
+	Data schemas.TeamResponse `json:"data"`
 }
