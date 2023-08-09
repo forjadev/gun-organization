@@ -37,5 +37,5 @@ type PingServerResponse struct {
 
 type TeamsServerResponse struct {
 	Message string 	`json:"message"`
-	Data schemas.TeamsResponse `json:"data"`
+	Data schemas.TeamResponse `json:"data"`
 }
