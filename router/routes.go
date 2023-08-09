@@ -1,7 +1,6 @@
 package router
 
 import (
-	"fmt"
 	docs "github.com/forjadev/gun-organization/docs"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
@@ -24,7 +23,6 @@ func InitializeRoutes() {
 	}
 
 	port := os.Getenv("PORT")
-	fmt.Printf(port)
 	if port == "" {
 		port = "8080"
 	}

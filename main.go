@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/forjadev/gun-organization/config"
 	"log"
 
 	"github.com/forjadev/gun-organization/router"
@@ -15,11 +16,12 @@ func main() {
 	}
 
 	//Initialize configs
-	//err = config.Init()
+	err = config.Init()
 
 	if err != nil {
 		log.Fatalf("could not initialize config: %v", err)
 	}
+
 	// Initialize Router
 	router.InitializeRoutes()
 }
