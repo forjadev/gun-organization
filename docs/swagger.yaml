@@ -9,7 +9,7 @@ definitions:
   handler.PingServerResponse:
     properties:
       data:
-        $ref: '#/definitions/schemas.PingResponse'
+        $ref: "#/definitions/schemas.PingResponse"
       message:
         type: string
     type: object
@@ -65,50 +65,111 @@ definitions:
             type: string
         type: object
     type: object
+  schema.TeamNamePayload:
+    properties:
+      teamname:
+        type: string
+  schema.TeamMembersResponse:
+    properties:
+      data:
+        type: array
+        items:
+          properties:
+            id:
+              type: integer
+            githubId:
+              type: integer
+            url:
+              type: string
+            login:
+              type: string
+            role:
+              type: string
+            team:
+              type: string
+            createdAt:
+              type: string
+            updatedAt:
+              type: string
+            deletedAt:
+              type: string
+      message:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
   /ping:
     get:
       consumes:
-      - application/json
+        - application/json
       description: Ping the server to check if it is running
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handler.PingServerResponse'
+            $ref: "#/definitions/handler.PingServerResponse"
       summary: Ping the server
       tags:
-      - Ping
+        - Ping
   /webhook:
     post:
       consumes:
-      - application/json
+        - application/json
       description: Handle with GitHub Webhook Payload
       parameters:
-      - description: Github webhook payload
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/service.GithubWebhookUserManagePayload'
+        - description: Github webhook payload
+          in: body
+          name: request
+          required: true
+          schema:
+            $ref: "#/definitions/service.GithubWebhookUserManagePayload"
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/handler.ErrorResponse'
+            $ref: "#/definitions/handler.ErrorResponse"
         "500":
           description: Server Error
           schema:
-            $ref: '#/definitions/handler.ErrorResponse'
+            $ref: "#/definitions/handler.ErrorResponse"
       summary: Github Webhook Membership Receiver
       tags:
-      - Webhook
+        - Webhook
+  /teams/:teamname/members:
+    get:
+      consumes:
+        - application/json
+      description: Returns list of members from a team
+      parameters:
+        - description: Team name
+          in: body
+          name: teamname
+          required: true
+          schema:
+            $ref: "#/definitions/schema.TeamNamePayload"
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/schema.TeamMembersResponse"
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/handler.ErrorResponse"
+        "500":
+          description: Server Error
+          schema:
+            $ref: "#/definitions/handler.ErrorResponse"
+      summary: Team members list
+      tags:
+        - Team
 swagger: "2.0"
