@@ -41,7 +41,7 @@
    ```
 3. Create a `.env` file in the root directory of the project by copying the `.env.example` file:
    ```sh
-   cp .env .env
+   cp .env.example .env
    ```
 4. Update the environment variables in the .env file with your own values.
 5. Build the project:
