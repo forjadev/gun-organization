@@ -1,8 +1,6 @@
 package handler
 
 import (
-	"net/http"
-
 	"github.com/forjadev/gun-organization/schemas"
 	"github.com/gin-gonic/gin"
 )
@@ -15,9 +13,6 @@ import (
 // @Success 200 {object} ListTeamMembersResponse
 // @Router /team/{teamname}/members [get]
 func ListTeamMembersHandler(ctx *gin.Context) {
-	// DB not initialized yet!
-	var db
-
 	teamName := ctx.Param("teamname")
 
 	if teamName == "" {
@@ -25,9 +20,13 @@ func ListTeamMembersHandler(ctx *gin.Context) {
 		return
 	}
 
-	if result := db.Joins("JOIN teams ON teams.team_id = member.team_id").Where("teams.name = ?", teamName).Find(&schema.Member{}); result.Error != nil {
+	members := []schemas.Member{}
+
+	err := db.Joins("JOIN teams ON teams.team_id = member.team_id").Where("teams.name = ?", teamName).Find(&schemas.Member{})
+
+	if err != nil {
 		sendError(ctx, 404, "Team not found")
 	}
 
-	sendSuccess(ctx, "ListTeamMembers", result)
+	sendSuccess(ctx, "ListTeamMembers", members)
 }
