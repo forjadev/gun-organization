@@ -10,6 +10,9 @@ import (
 
 // initializeRoutes sets up the routes for the application
 func initializeRoutes(r *gin.Engine) {
+	// Initialize handler
+	handler.InitiliazeHandler()
+
 	// Set the base path for all routes
 	basePath := "/api/v1"
 
@@ -24,6 +27,7 @@ func initializeRoutes(r *gin.Engine) {
 		// Define a GET route for the /ping endpoint
 		v1.GET("/ping", handler.PingServerHandler)
 		v1.POST("/webhook", handler.GitHubWebhookHandler)
+		v1.GET("/teams/:teamname/members", handler.ListTeamMembersHandler)
 	}
 
 	// Initialize Swagger documentation
