@@ -2,7 +2,6 @@ package handler
 
 import (
 	"bytes"
-	"crypto/sha1"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
@@ -14,17 +13,16 @@ import (
 )
 
 type GithubAPIRequest struct {
-	Message 			string `json:"message"`
-	Commiter 			GithubAPICommiter `json:"commiter"`
-	Content 			string `json:"content"`
-	Sha 					string `json:"sha"`
+	Message  string            `json:"message"`
+	Commiter GithubAPICommiter `json:"commiter"`
+	Content  string            `json:"content"`
+	Sha      string            `json:"sha"`
 }
 
 type GithubAPICommiter struct {
-	Name 					string `json:"name"`
-	Email 				string `json:"email"`
+	Name  string `json:"name"`
+	Email string `json:"email"`
 }
-
 
 type GithubAPIResponse struct {
 	Name           string `json:"name"`
@@ -87,13 +85,13 @@ func GetReadmeFromGithubHandler(c *gin.Context) {
 	apiResponse.ContentEncoded = encodeBase64(contentDecoded)
 
 	var reqUpdate GithubAPIRequest
-		reqUpdate.Message = "Atualizando Readme Via Golang"
-		reqUpdate.Commiter.Name = "Brando Rocha"
-		reqUpdate.Commiter.Email = "brandorocha00@gmail.com"
-		reqUpdate.Content = apiResponse.ContentEncoded
-		reqUpdate.Sha = apiResponse.Sha
+	reqUpdate.Message = "Atualizando Readme Via Golang"
+	reqUpdate.Commiter.Name = "Brando Rocha"
+	reqUpdate.Commiter.Email = "brandorocha00@gmail.com"
+	reqUpdate.Content = apiResponse.ContentEncoded
+	reqUpdate.Sha = apiResponse.Sha
 
-	updateReadme(&reqUpdate)
+	updateReadme(c, &reqUpdate)
 
 	c.JSON(http.StatusOK, apiResponse)
 }
@@ -103,27 +101,27 @@ func encodeBase64(data string) string {
 	return encoded
 }
 
-func updateReadme( body *GithubAPIRequest ) {
+func updateReadme(c *gin.Context, body *GithubAPIRequest) {
 	jsonData, err := json.Marshal(body)
-	req, _ := http.NewRequest("PUT", "https://api.github.com/repos/Bran00/media-simples/contents/README.md", bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest("PUT", "https://api.github.com/repos/Bran00/media-simples/contents/README.md", bytes.NewBuffer(jsonData))
 
-	/*if err != nil {
+	if err != nil {
 		http.Error(c.Writer, err.Error(), http.StatusInternalServerError)
 		return
-	} */
+	}
 
 	token := "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"
-	req.Header.Set("Authorization", "Bearer "+ token)
+	req.Header.Set("Authorization", "Bearer "+token)
 	req.Header.Set("Accept", "application/vnd.github.v3+json")
 	req.Header.Set("Content-Type", "application/json")
 
 	client := http.DefaultClient
 	response, err := client.Do(req)
 
-	/*if err != nil {
+	if err != nil {
 		http.Error(c.Writer, err.Error(), http.StatusInternalServerError)
 		return
-	}*/
+	}
 
 	defer response.Body.Close()
 
