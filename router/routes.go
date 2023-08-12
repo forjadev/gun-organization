@@ -25,7 +25,7 @@ func initializeRoutes(r *gin.Engine) {
 		v1.GET("/ping", handler.PingServerHandler)
 		v1.POST("/webhook", handler.GitHubWebhookHandler)
 		v1.GET("/get-readme", handler.GetReadmeFromGithubHandler)
-		v1.GET("/update-readme", handler.UpdateReadmeHandler)
+		//v1.GET("/update-readme", handler.UpdateReadmeHandler)
 	}
 
 	// Initialize Swagger documentation
