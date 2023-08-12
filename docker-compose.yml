@@ -2,10 +2,10 @@ services:
   database:
     hostname: database
     image: postgres
-    env_file: .env
+    env_file: ${ENV_FILE:-.env.example}
     ports:
-      - ${DB_PORT}:5432
+      - ${DB_PORT:-5432}:5432
     environment:
-      POSTGRES_PASSWORD: ${DB_PASSWD}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_PASSWORD: ${DB_PASSWD:-password}
+      POSTGRES_USER: ${DB_USER:-user}
+      POSTGRES_DB: ${DB_NAME:-db}
