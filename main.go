@@ -1,26 +1,25 @@
 package main
 
 import (
+	"github.com/forjadev/gun-organization/repository"
 	"log"
 
-	"github.com/forjadev/gun-organization/config"
 	"github.com/forjadev/gun-organization/router"
 	"github.com/joho/godotenv"
 )
 
+// Load environment variables, initialize config and router
 func main() {
-	err := godotenv.Load(".env")
-
-	if err != nil {
+	if err := godotenv.Load(".env"); err != nil {
 		log.Fatalf("could not load environment variables: %v", err)
 	}
 
-	//Initialize configs
-	err = config.Init()
-
-	if err != nil {
-		log.Fatalf("could not initialize config: %v", err)
+	db := repository.NewDatabase()
+	if err := db.Connect(); err != nil {
+		log.Fatalf("could not initialize database: %v", err)
 	}
-	// Initialize Router
-	router.Initialize()
+
+	if err := router.Initialize(); err != nil {
+		log.Fatalf("could not initialize router: %v", err)
+	}
 }

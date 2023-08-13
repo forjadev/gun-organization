@@ -32,7 +32,7 @@ const docTemplate = `{
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
+                        "schemas": {
                             "$ref": "#/definitions/handler.PingServerResponse"
                         }
                     }
@@ -58,8 +58,8 @@ const docTemplate = `{
                         "name": "request",
                         "in": "body",
                         "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/service.GithubWebhookUserManagePayload"
+                        "schemas": {
+                            "$ref": "#/definitions/services.GithubWebhookUserManagePayload"
                         }
                     }
                 ],
@@ -69,13 +69,13 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Bad Request",
-                        "schema": {
+                        "schemas": {
                             "$ref": "#/definitions/handler.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Server Error",
-                        "schema": {
+                        "schemas": {
                             "$ref": "#/definitions/handler.ErrorResponse"
                         }
                     }
@@ -117,7 +117,7 @@ const docTemplate = `{
                 }
             }
         },
-        "service.GithubWebhookUserManagePayload": {
+        "services.GithubWebhookUserManagePayload": {
             "type": "object",
             "properties": {
                 "action": {

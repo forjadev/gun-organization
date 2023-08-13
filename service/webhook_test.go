@@ -1,12 +1,12 @@
-package handler_test
+package service
 
 import (
+	"github.com/forjadev/gun-organization/repository"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
 
-	"github.com/forjadev/gun-organization/handler"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )
@@ -14,7 +14,7 @@ import (
 func TestGitHubWebhookHandler_Success(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	r.POST("/api/v1/webhook", handler.GitHubWebhookHandler)
+	r.POST("/api/v1/webhook", repository.GitHubWebhookHandler)
 	reqPayload := `{
 		"action": "added",
 		"scope": "some_scope",
@@ -47,7 +47,7 @@ func TestGitHubWebhookHandler_Success(t *testing.T) {
 func TestGitHubWebhookHandler_InvalidJSON(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	r.POST("/api/v1/webhook", handler.GitHubWebhookHandler)
+	r.POST("/api/v1/webhook", repository.GitHubWebhookHandler)
 	reqPayload := `{ invalid json payload`
 	rw := performRequest(r, http.MethodPost, "/api/v1/webhook", reqPayload)
 

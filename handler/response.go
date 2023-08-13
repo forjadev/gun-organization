@@ -2,11 +2,28 @@ package handler
 
 import (
 	"fmt"
-	"github.com/forjadev/gun-organization/schemas"
 	"net/http"
+
+	"github.com/forjadev/gun-organization/schemas"
 
 	"github.com/gin-gonic/gin"
 )
+
+func SendError(ctx *gin.Context, code int, msg string) {
+	ctx.Header("Content-Type", "application/json")
+	ctx.JSON(code, gin.H{
+		"message":   msg,
+		"errorCode": code,
+	})
+}
+
+func SendSuccess(ctx *gin.Context, op string, data interface{}) {
+	ctx.Header("Content-Type", "application/json")
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": fmt.Sprintf("operation from handler: %s successful", op),
+		"data":    data,
+	})
+}
 
 type ErrorResponse struct {
 	Message   string `json:"message"`
@@ -18,18 +35,7 @@ type PingServerResponse struct {
 	Data    schemas.PingResponse `json:"data"`
 }
 
-func sendError(ctx *gin.Context, code int, msg string) {
-	ctx.Header("Content-Type", "application/json")
-	ctx.JSON(code, gin.H{
-		"message":   msg,
-		"errorCode": code,
-	})
-}
-
-func sendSuccess(ctx *gin.Context, op string, data interface{}) {
-	ctx.Header("Content-Type", "application/json")
-	ctx.JSON(http.StatusOK, gin.H{
-		"message": fmt.Sprintf("operation from handler: %s successful", op),
-		"data":    data,
-	})
+type TeamsServerResponse struct {
+	Message string               `json:"message"`
+	Data    schemas.TeamResponse `json:"data"`
 }

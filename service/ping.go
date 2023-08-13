@@ -1,9 +1,9 @@
-package handler
+package service
 
 import (
+	"github.com/forjadev/gun-organization/handler"
 	"net/http"
 
-	"github.com/forjadev/gun-organization/schemas"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,10 +17,11 @@ import (
 // @Success 200 {object} PingServerResponse
 // @Router /ping [get]
 func PingServerHandler(ctx *gin.Context) {
-	pingData := schemas.PingResponse{
-		Message: "pong",
-		Status:  http.StatusOK,
-	}
+	//pingData := schemas.PingResponse{
+	//	Message: "pong",
+	//	Status:  http.StatusOK,
+	//}
 
-	sendSuccess(ctx, "PingServerHandler", pingData)
+	// TODO: fix error handling
+	handler.SendError(ctx, http.StatusBadRequest, "ok")
 }
