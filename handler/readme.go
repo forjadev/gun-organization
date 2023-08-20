@@ -39,7 +39,7 @@ type GithubAPIResponse struct {
 }
 
 func GetReadmeFromGithubHandler(c *gin.Context) {
-	req, err := http.NewRequest("GET", "https://api.github.com/repos/Bran00/media-simples/contents/README.md", nil)
+	req, err := http.NewRequest("GET", "https://api.github.com/repos/forjadev/.github/contents/profile/README.md", nil)
 	if err != nil {
 		http.Error(c.Writer, err.Error(), http.StatusInternalServerError)
 		return
@@ -103,14 +103,14 @@ func encodeBase64(data string) string {
 
 func updateReadme(c *gin.Context, body *GithubAPIRequest) {
 	jsonData, err := json.Marshal(body)
-	req, err := http.NewRequest("PUT", "https://api.github.com/repos/Bran00/media-simples/contents/README.md", bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest("PUT", "https://api.github.com/repos/forjadev/.github/contents/profile/README.md", bytes.NewBuffer(jsonData))
 
 	if err != nil {
 		http.Error(c.Writer, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	token := "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"
+	token := "****"
 	req.Header.Set("Authorization", "Bearer "+token)
 	req.Header.Set("Accept", "application/vnd.github.v3+json")
 	req.Header.Set("Content-Type", "application/json")
