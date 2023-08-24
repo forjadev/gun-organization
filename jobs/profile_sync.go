@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 
 	"github.com/joho/godotenv"
 
@@ -17,7 +18,7 @@ import (
 type Member struct {
 	Id    int    `json:"id"`
 	Login string `json:"login"`
-	URL   string `json:"url"`
+	URL   string `json:"html_url"`
 }
 
 type MemberInfo struct{}
@@ -36,49 +37,34 @@ func main() {
 	TOKEN = os.Getenv("GITHUB_TOKEN")
 	URL = os.Getenv("GITHUB_URL")
 
-	members, err := getMembers()
+	err = config.Init()
 	if err != nil {
 		panic(err)
 	}
 
-	for _, member := range members {
-		err := insertOrUpdateMember(schemas.Member{GithubID: strconv.Itoa(member.Id), Login: member.Login, URL: member.URL})
+	teams, err := getTeams()
+	if err != nil {
+		panic(err)
+	}
+
+	for _, team := range teams {
+		members, err := getMembers(team.Name)
 		if err != nil {
 			panic(err)
 		}
+
+		for _, member := range members {
+			insertOrUpdateMember(schemas.Member{GithubID: strconv.Itoa(member.Id), Login: member.Login, URL: member.URL, TeamID: int(team.ID)})
+		}
 	}
 
-	// // FORJAA_DB
-
-	// // Initialize configs
-	// err = config.Init()
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	// db := config.GetDatabase()
-
-	// var members []schemas.Member
-	// db.Find(&members)
-
-	// fmt.Println("FIND MEMBERS")
-
-	// for _, member := range members {
-	// 	fmt.Println(member)
-	// }
+	// Apenas para debug(saber oq ta gravando)
+	getDbMembers()
 }
 
-func getMembers() ([]Member, error) {
-	err := godotenv.Load(".env")
-	if err != nil {
-		return nil, err
-	}
-	// GITHUB
-	TOKEN := os.Getenv("GITHUB_TOKEN")
-	URL := os.Getenv("GITHUB_URL")
-
+func getMembers(teamName string) ([]Member, error) {
 	client := &http.Client{}
-	req, err := http.NewRequest("GET", URL, nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/%s/members", URL, teamName), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -92,30 +78,55 @@ func getMembers() ([]Member, error) {
 	defer res.Body.Close()
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
 	var data []Member
 	err = json.Unmarshal(body, &data)
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
 
 	return data, nil
 }
 
-func insertOrUpdateMember(member schemas.Member) error {
-	err := config.Init()
-	if err != nil {
-		return err
-	}
-
+func insertOrUpdateMember(member schemas.Member) {
 	db := config.GetDatabase()
-	result := db.Create(&member)
+	if db.Model(&schemas.Member{}).Where("github_id = ?", member.GithubID).Updates(map[string]any{"url": member.URL, "login": member.Login, "team_id": member.TeamID}).RowsAffected == 0 {
+		db.Create(&member)
+	}
+}
+
+func getDbMembers() {
+	db := config.GetDatabase()
+	var members []schemas.Member
+	db.Preload("Team").Find(&members)
+	for _, member := range members {
+		fmt.Printf("List of users: %s. with (URL, TeamName, GithubID)(%s, %s, %s)\n", member.Login, member.URL, member.Team.Name, member.GithubID)
+	}
+}
+
+func getTeams() ([]schemas.Team, error) {
+	db := config.GetDatabase()
+	var teams []schemas.Team
+	result := db.Find(&teams)
 
 	if result.Error != nil {
-		return result.Error
+		return nil, result.Error
 	}
 
-	fmt.Println(result.RowsAffected)
-	return nil
+	if result.RowsAffected == 0 {
+		teamNameList := strings.Split(os.Getenv("FORJA_TEAMS"), ",")
+		var newTeams []schemas.Team
+
+		for _, teamName := range teamNameList {
+			newTeams = append(newTeams, schemas.Team{Name: teamName})
+			fmt.Printf("Creating team: %s\n", teamName)
+		}
+
+		db.Create(&newTeams)
+
+		return getTeams()
+	}
+
+	return teams, nil
 }
